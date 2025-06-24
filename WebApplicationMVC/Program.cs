@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using WebApplicationMVC.Middleware;
 using WebApplicationMVC.Models;
+using WebApplicationMVC.Repositories;
 
 public class Program
 {
@@ -16,6 +17,7 @@ public class Program
                 builder.Configuration.GetConnectionString("DefaultConnection")
             )
         );
+        builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();

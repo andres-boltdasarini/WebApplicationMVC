@@ -1,20 +1,42 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationMVC.Models;
+using WebApplicationMVC.Models.Db;
+using WebApplicationMVC.Repositories;
 
 namespace WebApplicationMVC.Controllers
 {
     public class HomeController : Controller
     {
+        // ссылка на репозиторий
+        private readonly IBlogRepository _repo;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        // Также добавим инициализацию в конструктор
+        public HomeController(ILogger<HomeController> logger, IBlogRepository repo)
         {
             _logger = logger;
+            _repo = repo;
         }
 
-        public IActionResult Index()
+        // Сделаем метод асинхронным
+        public async Task<IActionResult> Index()
         {
+            // Добавим создание нового пользователя
+            var newUser = new User()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Andrey",
+                LastName = "Petrov",
+                JoinDate = DateTime.Now
+            };
+
+            // Добавим в базу
+            await _repo.AddUser(newUser);
+
+            // Выведем результат
+            Console.WriteLine($"User with id {newUser.Id}, named {newUser.FirstName} was successfully added on {newUser.JoinDate}");
+
             return View();
         }
 
