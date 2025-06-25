@@ -17,7 +17,9 @@ namespace WebApplicationMVC.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var requestRepository = context.RequestServices.GetService<IRequestRepository>();
-            string url = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}";
+
+            // Формируем полный URL включая query-параметры
+            string url = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
 
             try
             {
