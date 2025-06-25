@@ -27,15 +27,11 @@ namespace WebApplicationMVC.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(User user)
-        {
-            user.Id = Guid.NewGuid();
-            user.JoinDate = DateTime.Now;
-
-            await _repo.AddUser(user);
-
-            return Content($"Регистрация прошла успешно, {user.FirstName}!");
-        }
+       [HttpPost]
+       public async Task <IActionResult> Register (User newUser)
+       {
+           await _repo.AddUser(newUser);
+           return View(newUser);
+       }
     }
 }
